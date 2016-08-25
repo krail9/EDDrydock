@@ -9,6 +9,7 @@
 
       <!-- Bootstrap -->
       <link href="css/bootstrap.css" rel="stylesheet">
+      <link href="css/addon.css" rel="stylesheet">
 
       <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
       <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -29,6 +30,7 @@
          <div class="row">
             <div class="col-xs-12">
                <div class="panel panel-default">
+                  <div class="panel-heading"><h3 class="panel-title">Vulture</h3></div>
                   <div class="panel-body">Ship stats here</div>
                </div>
             </div>
@@ -39,7 +41,22 @@
                   <div class="panel-heading">
                      <h3 class="panel-title">Hardpoints</h3>
                   </div>
-                  <div class="panel-body">Hardpoints</div>
+                  <div class="list-group">
+                     <div class="list-group-item">
+                        <div class="part-size">●○○<br><span class="glyphicon glyphicon-screenshot" aria-hidden="true"></span></div>
+                        <div class="part-data">
+                           <div class="part-float">2T</div>
+                           <strong>1F Pulse Laser</strong><br>DPS: 9.3 Draw: 0.39MW
+                        </div>
+                     </div>
+                     <div class="list-group-item">
+                        <div class="part-size">●●●<br><span class="glyphicon glyphicon-flash" aria-hidden="true"></span></div>
+                        <div class="part-data">
+                           <div class="part-float">8T</div>
+                           <strong>3C Multicannon</strong><br>DPS: 23.5 Draw: 0.97MW
+                        </div>
+                     </div>
+                  </div>
                </div>
             </div>
             <div class="col-xs-12 col-sm-6 col-md-3 col-md-push-6">
@@ -47,7 +64,36 @@
                   <div class="panel-heading">
                      <h3 class="panel-title">Utility Slots</h3>
                   </div>
-                  <div class="panel-body">Utilities</div>
+                  <div class="list-group">
+                     <div class="list-group-item">
+                        <div class="part-size">●</div>
+                        <div class="part-data">
+                           <div class="part-float">1.3T</div>
+                           <strong>1I Chaff Launcher</strong><br>Ammo: 1+10
+                        </div>
+                     </div>
+                     <div class="list-group-item">
+                        <div class="part-size">●</div>
+                        <div class="part-data">
+                           <div class="part-float">2T</div>
+                           <strong>1C Shield Booster</strong><br>+12% Shield Strength
+                        </div>
+                     </div>
+                     <div class="list-group-item">
+                        <div class="part-size">○</div>
+                        <div class="part-data">
+                           <div class="part-float"></div>
+                           <h4 class="part-empty">EMPTY</h4>
+                        </div>
+                     </div>
+                     <div class="list-group-item">
+                        <div class="part-size">○</div>
+                        <div class="part-data">
+                           <div class="part-float"></div>
+                           <h4 class="part-empty">EMPTY</h4>
+                        </div>
+                     </div>
+                  </div>
                </div>
             </div>
             <div class="col-xs-12 col-sm-6 col-md-3 col-md-pull-6">
@@ -57,115 +103,59 @@
                   </div>
                   <div class="list-group">
                      <div class="list-group-item">
-                        <div class="row">
-                           <div class="col-xs-2">●</div>
-                           <div class="col-xs-10">
-                              <div class="row">
-                                 <div class="col-xs-10"><strong>Bulkheads</strong></div>
-                                 <div class="col-xs-2">0T</div>
-                              </div>
-                              <div class="row">
-                                 <div class="col-xs-12">Lightweight Alloys</div>
-                              </div>
-                           </div>
+                        <div class="part-size">●</div>
+                        <div class="part-data">
+                           <div class="part-float">0T</div>
+                           <strong>Bulkheads</strong><br>Lightweight Alloys
                         </div>
                      </div>
                      <div class="list-group-item">
-                        <div class="row">
-                           <div class="col-xs-2">●●<br>●●</div>
-                           <div class="col-xs-10">
-                              <div class="row">
-                                 <div class="col-xs-10"><strong>4C Power Plant</strong></div>
-                                 <div class="col-xs-2">5T</div>
-                              </div>
-                              <div class="row">
-                                 <div class="col-xs-12">Efficiency:C Power:13MW</div>
-                              </div>
-                           </div>
+                        <div class="part-size">●●<br>●●</div>
+                        <div class="part-data">
+                           <div class="part-float">5T</div>
+                           <strong>4C Power Plant</strong><br>Efficiency:C Power:13MW
                         </div>
                      </div>
                      <div class="list-group-item">
-                        <div class="row">
-                           <div class="col-xs-2">●●●<br>●●</div>
-                           <div class="col-xs-10">
-                              <div class="row">
-                                 <div class="col-xs-10"><strong>5D Thrusters</strong></div>
-                                 <div class="col-xs-2">8T</div>
-                              </div>
-                              <div class="row">
-                                 <div class="col-xs-12">Optimal Mass: 630T</div>
-                              </div>
-                           </div>
+                        <div class="part-size">●●●<br>●●</div>
+                        <div class="part-data">
+                           <div class="part-float">8T</div>
+                           <strong>5C Thrusters</strong><br>Optimal Mass: 630T
                         </div>
                      </div>
                      <div class="list-group-item">
-                        <div class="row">
-                           <div class="col-xs-2">●●<br>●●</div>
-                           <div class="col-xs-10">
-                              <div class="row">
-                                 <div class="col-xs-10"><strong>4B Frame Shift Drive</strong></div>
-                                 <div class="col-xs-2">16T</div>
-                              </div>
-                              <div class="row">
-                                 <div class="col-xs-12">Optimal Mass: 438T</div>
-                              </div>
-                           </div>
+                        <div class="part-size">●●<br>●●</div>
+                        <div class="part-data">
+                           <div class="part-float">16T</div>
+                           <strong>4B Frame Shift Drive</strong><br>Optimal Mass: 438T
                         </div>
                      </div>
                      <div class="list-group-item">
-                        <div class="row">
-                           <div class="col-xs-2">●●<br>●</div>
-                           <div class="col-xs-10">
-                              <div class="row">
-                                 <div class="col-xs-10"><strong>3D Life Support</strong></div>
-                                 <div class="col-xs-2">2T</div>
-                              </div>
-                              <div class="row">
-                                 <div class="col-xs-12">Time: 7:30</div>
-                              </div>
-                           </div>
+                        <div class="part-size">●●<br>●</div>
+                        <div class="part-data">
+                           <div class="part-float">2T</div>
+                           <strong>3D Life Support</strong><br>Time: 7:30
                         </div>
                      </div>
                      <div class="list-group-item">
-                        <div class="row">
-                           <div class="col-xs-2">●●●<br>●●</div>
-                           <div class="col-xs-10">
-                              <div class="row">
-                                 <div class="col-xs-10"><strong>5A Power Distributor</strong></div>
-                                 <div class="col-xs-2">20T</div>
-                              </div>
-                              <div class="row">
-                                 <div class="col-xs-12">WEP:41/4.1 ENG:29/2.5 SYS:29/2.5</div>
-                              </div>
-                           </div>
+                        <div class="part-size">●●●<br>●●</div>
+                        <div class="part-data">
+                           <div class="part-float">20T</div>
+                           <strong>5A Power Distributor</strong><br>WEP:41/4.1 ENG:29/2.5 SYS:29/2.5
                         </div>
                      </div>
                      <div class="list-group-item">
-                        <div class="row">
-                           <div class="col-xs-2">●●<br>●●</div>
-                           <div class="col-xs-10">
-                              <div class="row">
-                                 <div class="col-xs-10"><strong>4E Sensors</strong></div>
-                                 <div class="col-xs-2">10T</div>
-                              </div>
-                              <div class="row">
-                                 <div class="col-xs-12">Range: 4.48km</div>
-                              </div>
-                           </div>
+                        <div class="part-size">●●<br>●●</div>
+                        <div class="part-data">
+                           <div class="part-float">10T</div>
+                           <strong>4E Sensors</strong><br>Range: 4.48km
                         </div>
                      </div>
                      <div class="list-group-item">
-                        <div class="row">
-                           <div class="col-xs-2">●●<br>●</div>
-                           <div class="col-xs-10">
-                              <div class="row">
-                                 <div class="col-xs-10"><strong>3C Fuel Tank</strong></div>
-                                 <div class="col-xs-2">8T</div>
-                              </div>
-                              <div class="row">
-                                 <div class="col-xs-12"></div>
-                              </div>
-                           </div>
+                        <div class="part-size">●●<br>●</div>
+                        <div class="part-data">
+                           <div class="part-float">8T</div>
+                           <strong>3C Fuel Tank</strong><br>
                         </div>
                      </div>
                   </div>
@@ -176,7 +166,43 @@
                   <div class="panel-heading">
                      <h3 class="panel-title">Optional Internals</h3>
                   </div>
-                  <div class="panel-body">Optional</div>
+                  <div class="list-group">
+                     <div class="list-group-item">
+                        <div class="part-size">●●●<br>●●</div>
+                        <div class="part-data">
+                           <div class="part-float">20T</div>
+                           <strong>5E Shield Generator</strong><br>Optimal Mass: 405T<br>
+                        </div>
+                     </div>
+                     <div class="list-group-item">
+                        <div class="part-size">●●<br>●○</div>
+                        <div class="part-data">
+                           <div class="part-float">8T</div>
+                           <strong>3E Cargo Rack</strong><br><br>
+                        </div>
+                     </div>
+                     <div class="list-group-item">
+                        <div class="part-size">○○</div>
+                        <div class="part-data">
+                           <div class="part-float"></div>
+                           <h4 class="part-empty">EMPTY</h4>
+                        </div>
+                     </div>
+                     <div class="list-group-item">
+                        <div class="part-size">○</div>
+                        <div class="part-data">
+                           <div class="part-float"></div>
+                           <h4 class="part-empty">EMPTY</h4>
+                        </div>
+                     </div>
+                     <div class="list-group-item">
+                        <div class="part-size">●</div>
+                        <div class="part-data">
+                           <div class="part-float"></div>
+                           <strong>1E Basic Discovery Scanner</strong><br>Range: 500ls<br>
+                        </div>
+                     </div>
+                  </div>
                </div>
             </div>
          </div>
