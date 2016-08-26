@@ -1,0 +1,97 @@
+-------------URL FRAGMENT + storage-------------
+
+----------	0
+ABCDEFGHIJ	10
+KLMNOPQRST	20
+UVWXYZabcd	30
+efghijklmn	40
+opqrstuvwx	50
+yz01234567	60
+89.-			64
+
+base64 encoding
+
+ship, bulkheads, core internals and utilities are 1 char (64 values).
+optional internals and hardpoints are 2 chars (4024 values)
+
+fragment:
+
+ ship  core          optional         hardpoint      util
+    ||------||--------------------||--------------||------|
+   #abbbbbbbbcCcCcCcCcCcCcCcCcCcCcCdDdDdDdDdDdDdDdDeeeeeeee
+    1   8             8-22              2-16         1-8
+
+total: 20-55
+
+-------------numeric IDs-------------
+every component has an non-sequencial id
+
+bulkheads 				: q
+
+	q 	> bulkhead types
+			1 = lightweight alloys
+			2 = reinforced alloys
+			3 = military composite
+			4 = mirrored composite
+			5 = reactive composite
+
+core internals			: yz
+
+	y	= 1-5
+		> rating (E-A)
+
+	z	= 1-8
+		> class
+
+optional internals	: xyz
+
+	x 	= 1-40
+		> component type
+			1 = shield generators
+			2 = cargo racks
+			...
+
+	y	= 1-5
+		> rating (E-A)
+
+	z	= 1-8
+		> class
+
+hardpoints				: xyz
+
+x 	= 1-40
+	> component type
+		1 = pulse lasers
+		2 = burst lasers
+		3 = beam lasers
+		...
+
+y	= 1-5
+	> rating (E-A)
+
+z	= 1-8
+	> class
+
+utilities				: yx
+
+y	= 1-5
+	> rating (E-A)
+
+x 	= 1-9
+	> component type
+		1 = shield booster
+		2 = chaff launcher
+		3 = ecm
+		4 = point defence
+		5 = heat sink launcher
+		6 = cargo scanner
+		7 = wake scanner
+		8 = bounty scanner
+
+
+
+
+
+
+
+---
