@@ -2,7 +2,8 @@ var database = {
 
 	ship : {
 		1 : {
-			updated:false, name:'Sidewinder', pad:1, hardpoint:[1,1], core:[2,2,2,1,1,1,1], internal:[2,2,1,1], utility:2,
+			updated:false, name:'Sidewinder', pad:1, hardpoint:[1,1], core:[2,2,2,1,1,1,1], internal:[2,2,1,1], utility:[1,1],
+			mass:25,
 			bulkhead:{
 				1 : {name: 'Lightweight Alloy', class:8, rating:'A', cost: 0, mass: 0.0 },
 				2 : {name: 'Reinforced Alloy', class:8, rating:'A', cost: 23600, mass: 2.0 },
@@ -10,10 +11,13 @@ var database = {
 			defaults:{
 				core: [12,12,12,11,11,11,31],
 				internal: [112,212,311,0],
+				hardpoint: [111,111],
+				utility: [0,0],
 			},
 		},
 		2 : {
-			updated:false, name:'Hauler', pad:1, hardpoint:[1], core:[2,2,2,1,1,1,2], internal:[3,3,2,1], utility:2,
+			updated:false, name:'Hauler', pad:1, hardpoint:[1], core:[2,2,2,1,1,1,2], internal:[3,3,2,1], utility:[1,1],
+			mass:14,
 			bulkhead:{
 				1 : {name: 'Lightweight Alloy', class:8, rating:'A', cost: 0, mass: 0.0 },
 				2 : {name: 'Reinforced Alloy', class:8, rating:'A', cost: 42180, mass: 1.0 },
@@ -21,10 +25,13 @@ var database = {
 			defaults:{
 				core:[12,12,12,11,11,11,32],
 				internal: [212,212,112,311],
+				hardpoint: [111],
+				utility: [0,0],
 			},
 		},
 		3 : {
-			updated:false, name:'Vulture', pad:1, hardpoint:[3,3], core:[4,5,4,3,5,4,3], internal:[5,4,2,1,1], utility:2,
+			updated:false, name:'Vulture', pad:1, hardpoint:[3,3], core:[4,5,4,3,5,4,3], internal:[5,4,2,1,1], utility:[1,1,1,1],
+			mass:230,
 			bulkhead:{
 				1 : {name: 'Lightweight Alloy', class:8, rating:'A', cost: 0, mass: 0.0 },
 				2 : {name: 'Reinforced Alloy', class:8, rating:'A', cost: 1970250, mass: 17.0 },
@@ -32,6 +39,8 @@ var database = {
 			defaults:{
 				core:[14,15,14,13,15,14,33],
 				internal:[0,0,0,0,0],
+				hardpoint:[111,111],
+				utility: [0,0,0,0],
 			},
 		},
 	},
@@ -89,5 +98,19 @@ var database = {
 
 		//discovery scanner
 		311 : {group: 'scan', name: 'Basic Discovery Scanner', class:1, rating:'E', cost:1000, mass:2.0, range: 500},
+	},
+
+	hardpoint : {
+		//pulse lasers
+		111 : {group: 'pulse', name: 'Pulse Laser', class:1, rating:'F', cost:1870, mass:2.0, power:-0.39, mount:'F', draw:-0.33, damage:2.0, rof:3.8, dps:7.9, ap: 20, breachdam:1.7, minbreach:0.4, maxbreach:0.8, range:3000},
+		121 : {group: 'pulse', name: 'Pulse Laser', class:1, rating:'G', cost:5610, mass:2.0, power:-0.39, mount:'G', draw:-0.39, damage:1.6, rof:4.0, dps:6.2, ap: 20, breachdam:1.3, minbreach:0.4, maxbreach:0.8, range:3000},
+		131 : {group: 'pulse', name: 'Pulse Laser', class:1, rating:'G', cost:22100, mass:2.0, power:-0.38, mount:'T', draw:-0.39, damage:1.2, rof:3.3, dps:6.2, ap: 20, breachdam:1, minbreach:0.4, maxbreach:0.8, range:3000},
+
+		113 : {group: 'pulse', name: 'Pulse Laser', class:3, rating:'D', cost:59840, mass:8.0, power:-0.90, mount:'F', draw:-0.96, damage:6.0, rof:3.0, dps:18.1, ap: 52, breachdam:5.1, minbreach:0.4, maxbreach:0.8, range:3000},
+		123 : {group: 'pulse', name: 'Pulse Laser', class:3, rating:'E', cost:119510, mass:8.0, power:-0.92, mount:'G', draw:-0.92, damage:4.6, rof:3.2, dps:14.8, ap: 20, breachdam:3.9, minbreach:0.4, maxbreach:0.8, range:3000},
+	},
+
+	utility : {
+		11 : {group:'launcher', name: 'Chaff Launcher', class:1, rating:'I', cost:8500, mass:1.3, power:-0.2, clip:1, ammo:10}
 	},
 }

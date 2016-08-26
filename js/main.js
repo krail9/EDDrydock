@@ -45,15 +45,39 @@ window.drydock = new (function() {
 		row.appendChild(newDiv);
 	};
 
+	var hardpointPartRow = function(partID,row) {
+
+		var part, size, title, mass, stats;
+		console.log('populating hardpoint part: '+partID.toString())
+		part = database.hardpoint[partID];
+
+		stats = 'Dam: '+part.damage.toString()+' DPS: '+part.dps.toString();
+
+		size = part.class;
+		title = size.toString()+part.rating+' '+part.name;
+		if (part.cargo) {
+			mass = part.cargo.toString()+'T'; //display cargo capacity as mass for racks
+		} else {
+			mass = part.mass.toString()+'T';
+		};
+
+		//mass display
+		newDiv = document.createElement('div');
+		newDiv.className = 'part-float';
+		newDiv.innerHTML = mass;
+		row.appendChild(newDiv);
+		//name and stats
+		var newDiv = document.createElement('div');
+		newDiv.className = 'part-data';
+		newDiv.innerHTML = '<strong>' + title + '</strong><br>' + stats;
+		row.appendChild(newDiv);
+
+	};
+
 	//add current info              int   string  element
-	var populatePartRow = function(partID,partType,row,ship) {
+	var internalPartRow = function(partID,partType,row,ship) {
 		//get stats
 		var part, size, title, mass, stats;
-
-		if (partID==0) {
-
-			return;
-		};
 
 		console.log('populating part: '+partType+partID.toString())
 		switch (partType) {
@@ -111,6 +135,11 @@ window.drydock = new (function() {
 				part = database.internal[partID];
 				stats = 'Range: ' + part.range.toString() + 'ls';
 				break;
+
+			case "launcher":
+				part = database.utility[partID];
+				stats = 'Clip: ' + part.clip.toString() + ' Ammo:' + part.ammo.toString();
+				break;
 			default:
 				console.log('no valid part handler!')
 		}
@@ -134,7 +163,7 @@ window.drydock = new (function() {
 		row.appendChild(newDiv);
 
 
-	}; //populatePartRow
+	}; //internalPartRow
 
 	//when ship changes or user reverts to stock loadout
 	var handleResetShip = function(id) {
@@ -146,6 +175,8 @@ window.drydock = new (function() {
 		//core components
 		currentParts.core = currentParts.ship.defaults.core;
 		currentParts.internal = currentParts.ship.defaults.internal;
+		currentParts.hardpoint = currentParts.ship.defaults.hardpoint;
+		currentParts.utility = currentParts.ship.defaults.utility;
 
 		document.title = baseTitle + ' - ' + currentParts.ship.name;
 
@@ -157,22 +188,22 @@ window.drydock = new (function() {
 		targetElement.innerHTML = ''; //clear current stuff
 
 		newElement = targetElement.appendChild( createPartRow(8,'bulkheadRow')); //bulkhead
-		populatePartRow(currentParts.bulkhead,'bulkhead',newElement,currentParts.ship);
+		internalPartRow(currentParts.bulkhead,'bulkhead',newElement,currentParts.ship);
 
 		newElement = targetElement.appendChild( createPartRow(currentParts.ship.core[0],'powerplantRow')); //powerplant
-		populatePartRow(currentParts.core[0],'powerplant',newElement);
+		internalPartRow(currentParts.core[0],'powerplant',newElement);
 		newElement = targetElement.appendChild( createPartRow(currentParts.ship.core[1],'thrusterRow')); //thruster
-		populatePartRow(currentParts.core[1],'thruster',newElement);
+		internalPartRow(currentParts.core[1],'thruster',newElement);
 		newElement = targetElement.appendChild( createPartRow(currentParts.ship.core[2],'fsdRow')); //fsd
-		populatePartRow(currentParts.core[2],'fsd',newElement);
+		internalPartRow(currentParts.core[2],'fsd',newElement);
 		newElement = targetElement.appendChild( createPartRow(currentParts.ship.core[3],'lifesupportRow')); //lifesupport
-		populatePartRow(currentParts.core[3],'lifesupport',newElement);
+		internalPartRow(currentParts.core[3],'lifesupport',newElement);
 		newElement = targetElement.appendChild( createPartRow(currentParts.ship.core[4],'distributorRow')); //distributor
-		populatePartRow(currentParts.core[4],'distributor',newElement);
+		internalPartRow(currentParts.core[4],'distributor',newElement);
 		newElement = targetElement.appendChild( createPartRow(currentParts.ship.core[5],'sensorRow')); //sensors
-		populatePartRow(currentParts.core[5],'sensor',newElement);
+		internalPartRow(currentParts.core[5],'sensor',newElement);
 		newElement = targetElement.appendChild( createPartRow(currentParts.ship.core[6],'shipfuel')); //sensors
-		populatePartRow(currentParts.core[6],'shipfuel',newElement);
+		internalPartRow(currentParts.core[6],'shipfuel',newElement);
 
 		//core internals
 		targetElement = document.getElementById('internalParts');
@@ -182,12 +213,32 @@ window.drydock = new (function() {
 			if (currentParts.internal[i]==0) {
 				emptyPartRow(newElement);
 			} else {
-				populatePartRow(currentParts.internal[i],database.internal[currentParts.internal[i]].group,newElement);
+				internalPartRow(currentParts.internal[i],database.internal[currentParts.internal[i]].group,newElement);
 			};
-
 		};
-
-
+		//hardpoints
+		targetElement = document.getElementById('hardpointParts');
+		targetElement.innerHTML = ''; //clear current stuff
+		for (var i = 0; i < currentParts.ship.hardpoint.length; i++) {
+			newElement = targetElement.appendChild( createPartRow(currentParts.ship.hardpoint[i],'hardpoint'+i.toString()+'Row'));
+			if (currentParts.hardpoint[i]==0) {
+				emptyPartRow(newElement);
+			} else {
+				hardpointPartRow(currentParts.hardpoint[i],newElement);
+			};
+		};
+		//utilities
+		targetElement = document.getElementById('utilityParts');
+		targetElement.innerHTML = ''; //clear current stuff
+		console.log('utilites: '+currentParts.ship.utility.length.toString())
+		for (var i = 0; i < currentParts.ship.utility.length; i++) {
+			newElement = targetElement.appendChild( createPartRow(currentParts.ship.utility[i],'utility'+i.toString()+'Row'));
+			if (currentParts.utility[i]==0) {
+				emptyPartRow(newElement);
+			} else {
+				hardpointPartRow(currentParts.utility[i],database.utility[currentParts.utility[i]].group,newElement);
+			};
+		};
 
 	}; //handleResetShip
 
