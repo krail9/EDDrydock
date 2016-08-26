@@ -13,6 +13,7 @@
 
 .part-float {
 	float:right;
+	margin-right:5px;
 }
 
 .part-empty {
