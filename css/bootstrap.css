@@ -5257,9 +5257,10 @@ a.thumbnail.active {
 }
 .list-group-item {
   position: relative;
-  min-height:54px;
+  /*min-height:54px;*/
   display: block;
-  padding: 6px 0px;
+  padding: 0px;
+  padding-top: 4px;
   margin-bottom: -1px;
   background-color: #fff;
   border: 1px solid #ddd;
@@ -5467,7 +5468,7 @@ button.list-group-item-danger.active:focus {
           box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
 }
 .panel-body {
-  padding: 15px;
+  padding: 6px 45px;
 }
 .panel-heading {
   padding: 10px 15px;

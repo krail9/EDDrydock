@@ -1,10 +1,12 @@
+window.drydock = (function () {
 
+	var baseTitle = 'Elite Drydock';
 
-window.drydock = new (function() {
+	//part selection menu vars
+	var currentSlot = null;
+	var currentPanel = 'powerplantmenu';
 
-	var baseTitle = 'Elite Drydock'
-
-
+	//cached ship components and stats
 	var currentParts = {
 
 		ship 			: {},
@@ -19,9 +21,97 @@ window.drydock = new (function() {
 		},
 	};
 
+	//add event to this object -with ie<9 support
+	var setEventHandler = function(obj, name, fn) {
+		if (obj.addEventListener) {
+			return(obj.addEventListener(name, fn));
+		} else if (obj.attachEvent){
+			return(obj.attachEvent("on" + name, function() {return(fn.call(obj));}));
+		}
+	};
+
+	//let us swap parts when a slot is clicked
+	var onSlotClick = function() {
+		console.log(this.id+' clicked! parent: '+this.parentElement.id);
+		currentSlot = this.id;
+
+		$('#menucontainer').appendTo(this);
+		$('#menucontainer').show();
+		$('#pageoverlay').show();
+
+		//show appropriate menu section
+		$('#'+currentPanel).hide();
+		currentPanel = getSlotMenu(currentSlot);
+		$('#'+currentPanel).show();
+
+		//show appropriate part sizes
+		var slotSize = getSlotSize(currentSlot);
+		console.log('this slot size: '+slotSize.toString());
+
+		var panelRows = $('#'+currentPanel).find('.menu-row');
+		for (var i = 0; i < panelRows.length; i++) {
+			if (slotSize >= database.menus[currentPanel].sizeIndex[i]) {
+				$(panelRows[i]).show();
+			} else {
+				$(panelRows[i]).hide();
+			}
+		}
+
+	};
+	//hide menu when clicking elsewhere
+	var onOverlayClick = function() {
+		hidePartMenu();
+	};
+
+	var onMenuButtonClick = function(partID) {
+		console.log('menu button clicked!');
+		if (partID) {
+			console.log('passed part ID: '+partID);
+		} else {
+			console.log('no part ID passed');
+		}
+		hidePartMenu();
+	};
+
 	//when new ship is selected from dropdown
 	var onSelectShipChange = function(e) {
 		handleResetShip(e.target.value);
+	};
+
+	var hidePartMenu = function() {
+		$('#menucontainer').hide();
+		$('#pageoverlay').hide();
+		$('#menucontainer').appendTo('#footer');
+	};
+
+	//takes ID of a partrow and returns max size
+	var getSlotSize = function(rowID) {
+		var idParts = rowID.split('_');
+		switch (idParts[0]) {
+			case 'powerplantRow': return currentParts.ship.core[0];
+			case 'thrusterRow': return currentParts.ship.core[1];
+			case 'fsdRow': return currentParts.ship.core[2];
+			case 'lifesupportRow': return currentParts.ship.core[3];
+			case 'distributorRow': return currentParts.ship.core[4];
+			case 'sensorRow': return currentParts.ship.core[5];
+			case 'shipfuelRow': return currentParts.ship.core[6];
+			default: return 1;
+		}
+	};
+
+	//takes ID of a part row and returns corresponding menu id
+	var getSlotMenu = function(rowID) {
+		var idParts = rowID.split('_');
+		switch (idParts[0]) {
+			case 'powerplantRow': return 'powerplantmenu';
+			case 'thrusterRow': return 'thrustermenu';
+			case 'fsdRow': return 'fsdmenu';
+			case 'lifesupportRow': return 'lifesupportmenu';
+			case 'distributorRow': return 'distributormenu';
+			case 'sensorRow': return 'sensormenu';
+			case 'shipfuelRow': return 'shipfuelmenu';
+			default: return;
+		}
 	};
 
 	//create a list-group-item     int    string
@@ -33,7 +123,7 @@ window.drydock = new (function() {
 		sizeDiv.className = "part-size";
 		sizeDiv.appendChild(document.createTextNode(slotSize.toString()));
 		newEle.appendChild(sizeDiv);
-
+		setEventHandler(newEle,'click',onSlotClick);
 		return newEle;
 	}; //createPartRow
 
@@ -48,7 +138,7 @@ window.drydock = new (function() {
 	var hardpointPartRow = function(partID,row) {
 
 		var part, size, title, mass, stats;
-		console.log('populating hardpoint part: '+partID.toString())
+		console.log('populating hardpoint part: '+partID.toString());
 		part = database.hardpoint[partID];
 
 		stats = 'Dam: '+part.damage.toString()+' DPS: '+part.dps.toString();
@@ -59,7 +149,7 @@ window.drydock = new (function() {
 			mass = part.cargo.toString()+'T'; //display cargo capacity as mass for racks
 		} else {
 			mass = part.mass.toString()+'T';
-		};
+		}
 
 		//mass display
 		newDiv = document.createElement('div');
@@ -79,7 +169,7 @@ window.drydock = new (function() {
 		//get stats
 		var part, size, title, mass, stats;
 
-		console.log('populating part: '+partType+partID.toString())
+		console.log('populating part: '+partType+partID.toString());
 		switch (partType) {
 			case "bulkhead":
 				part = ship.bulkhead[partID];
@@ -141,7 +231,7 @@ window.drydock = new (function() {
 				stats = 'Clip: ' + part.clip.toString() + ' Ammo:' + part.ammo.toString();
 				break;
 			default:
-				console.log('no valid part handler!')
+				console.log('no valid part handler!');
 		}
 		size = part.class;
 		title = size.toString()+part.rating+' '+part.name;
@@ -149,7 +239,7 @@ window.drydock = new (function() {
 			mass = part.cargo.toString()+'T'; //display cargo capacity as mass for racks
 		} else {
 			mass = part.mass.toString()+'T';
-		};
+		}
 
 		//mass display
 		newDiv = document.createElement('div');
@@ -202,63 +292,133 @@ window.drydock = new (function() {
 		internalPartRow(currentParts.core[4],'distributor',newElement);
 		newElement = targetElement.appendChild( createPartRow(currentParts.ship.core[5],'sensorRow')); //sensors
 		internalPartRow(currentParts.core[5],'sensor',newElement);
-		newElement = targetElement.appendChild( createPartRow(currentParts.ship.core[6],'shipfuel')); //sensors
+		newElement = targetElement.appendChild( createPartRow(currentParts.ship.core[6],'shipfuelRow')); //sensors
 		internalPartRow(currentParts.core[6],'shipfuel',newElement);
 
 		//core internals
 		targetElement = document.getElementById('internalParts');
 		targetElement.innerHTML = ''; //clear current stuff
 		for (var i = 0; i < currentParts.ship.internal.length; i++) {
-			newElement = targetElement.appendChild( createPartRow(currentParts.ship.internal[i],'internal'+i.toString()+'Row'));
-			if (currentParts.internal[i]==0) {
+			newElement = targetElement.appendChild( createPartRow(currentParts.ship.internal[i],'internalRow_'+i.toString()));
+			if (currentParts.internal[i]===0) {
 				emptyPartRow(newElement);
 			} else {
 				internalPartRow(currentParts.internal[i],database.internal[currentParts.internal[i]].group,newElement);
-			};
-		};
+			}
+		}
 		//hardpoints
 		targetElement = document.getElementById('hardpointParts');
 		targetElement.innerHTML = ''; //clear current stuff
-		for (var i = 0; i < currentParts.ship.hardpoint.length; i++) {
-			newElement = targetElement.appendChild( createPartRow(currentParts.ship.hardpoint[i],'hardpoint'+i.toString()+'Row'));
-			if (currentParts.hardpoint[i]==0) {
+		for (i = 0; i < currentParts.ship.hardpoint.length; i++) {
+			newElement = targetElement.appendChild( createPartRow(currentParts.ship.hardpoint[i],'hardpointRow_'+i.toString()));
+			if (currentParts.hardpoint[i]===0) {
 				emptyPartRow(newElement);
 			} else {
 				hardpointPartRow(currentParts.hardpoint[i],newElement);
-			};
-		};
+			}
+		}
 		//utilities
 		targetElement = document.getElementById('utilityParts');
 		targetElement.innerHTML = ''; //clear current stuff
-		console.log('utilites: '+currentParts.ship.utility.length.toString())
-		for (var i = 0; i < currentParts.ship.utility.length; i++) {
-			newElement = targetElement.appendChild( createPartRow(currentParts.ship.utility[i],'utility'+i.toString()+'Row'));
-			if (currentParts.utility[i]==0) {
+		console.log('utilites: '+currentParts.ship.utility.length.toString());
+		for (i = 0; i < currentParts.ship.utility.length; i++) {
+			newElement = targetElement.appendChild( createPartRow(currentParts.ship.utility[i],'utilityRow_'+i.toString()));
+			if (currentParts.utility[i]===0) {
 				emptyPartRow(newElement);
 			} else {
-				hardpointPartRow(currentParts.utility[i],database.utility[currentParts.utility[i]].group,newElement);
-			};
-		};
+				internalPartRow(currentParts.utility[i],database.utility[currentParts.utility[i]].group,newElement);
+			}
+		}
 
 	}; //handleResetShip
 
+	var constructPartMenu = function(menuContainer) {
+
+		for (var i = 0; i < database.menus.index.length; i++) {
+
+			var currentID = database.menus.index[i];
+			var currentMenu = database.menus[currentID];
+			console.log('found menu panel:'+currentID);
+			console.log('menu name: '+currentMenu.name+', header: '+currentMenu.hasheader.toString());
+
+			var newPanel = document.createElement('div');
+			newPanel.className = 'panel panel-primary';
+			newPanel.id = currentID;
+			if (currentMenu.hasheader) {
+				var newHeader = document.createElement('div');
+				newHeader.className = 'panel-heading';
+				newHeader.appendChild(document.createTextNode(currentMenu.name));
+				newPanel.appendChild(newHeader);
+			}
+			var newBody = document.createElement('div');
+			newBody.className = 'panel-body';
+
+			console.log('current menu has '+currentMenu.contents.length.toString()+' rows');
+			switch (currentID) {
+				//internals and hardpoints use a special 'part type' menu which links to a oart list
+				case 'internalmenu': break;
+				case 'hardpointmenu': break;
+				default:
+					//most menus are handled as part lists
+					for (var j = 0; j < currentMenu.contents.length; j++) {
+						var newRow = document.createElement('div');
+						newRow.className = 'menu-row';
+						console.log('current row has '+currentMenu.contents[j].length.toString()+' elements');
+						for (var k = 0; k < currentMenu.contents[j].length; k++) {
+
+							(function () {
+								var currentItem = currentMenu.contents[j][k];
+								console.log('current button is for '+currentItem.label+', part: '+currentItem.part);
+
+								var newButton = document.createElement('div');
+								newButton.className = 'btn btn-default btn-type0';
+								newButton.addEventListener('click', function(e) {e.stopPropagation();onMenuButtonClick(currentItem.part);}, false);
+								newButton.appendChild(document.createTextNode(currentItem.label));
+								newRow.appendChild(newButton);
+							}()); //immediate invocation
+						}
+						newBody.appendChild(newRow);
+					}
+			}
+
+			newPanel.appendChild(newBody);
+			menuContainer.appendChild(newPanel);
+		}
+
+		for (i = 0; i < database.menus.index.length; i++) {
+			$('#'+database.menus.index[i]).hide();
+		}
+
+
+	};
 
 	var onDOMContentLoaded = function(e) {
 		var testText = document.createTextNode('initialised');
 		document.getElementById('testmessage').appendChild(testText);
-
+		//$('#menucontainer').hide();
 
 		var shipSelect = document.getElementById('ship-select');
 
+		//setEventHandler(document.getElementById('pageoverlay'),'click',onOverlayClick);
+		document.getElementById('pageoverlay').addEventListener('click',onOverlayClick);
+
+		constructPartMenu(document.getElementById('menucontainer'));
+
+		$('#pageoverlay').hide();
+		$('#menucontainer').hide();
+
 		shipSelect.focus();
 		shipSelect.addEventListener('change', onSelectShipChange);
+
 		//list stuff for the default loadout
 
 		//no hash fragment, load default setup
-		if (window.location.hash.length == 0) {
+		if (window.location.hash.length === 0) {
 			handleResetShip(parseInt(shipSelect.value));
-		};
+		}
 	}; //onDOMContentLoaded
 
 	window.addEventListener('DOMContentLoaded', onDOMContentLoaded);
+
+
 })();
