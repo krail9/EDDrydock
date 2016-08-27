@@ -71,6 +71,10 @@ window.drydock = (function () {
 			console.log('no part ID passed');
 		}
 		hidePartMenu();
+
+		assignPartFromSlot(partID,currentSlot);
+		internalPartRow(partID,currentSlot.split('R')[0],document.getElementById(currentSlot),currentParts.ship);
+
 	};
 
 	//when new ship is selected from dropdown
@@ -111,6 +115,28 @@ window.drydock = (function () {
 			case 'sensorRow': return 'sensormenu';
 			case 'shipfuelRow': return 'shipfuelmenu';
 			default: return;
+		}
+	};
+
+	//take part ID and assign to correct section currentParts based on row
+	var assignPartFromSlot = function(partID,rowID) {
+		var idParts = rowID.split('_');
+		switch (idParts[0]) {
+			case 'powerplantRow': currentParts.core[0] = partID;
+				break;
+			case 'thrusterRow': currentParts.core[1] = partID;
+				break;
+			case 'fsdRow': currentParts.core[2] = partID;
+				break;
+			case 'lifesupportRow': currentParts.core[3] = partID;
+				break;
+			case 'distributorRow': currentParts.core[4] = partID;
+				break;
+			case 'sensorRow': currentParts.core[5] = partID;
+				break;
+			case 'shipfuelRow': currentParts.core[6] = partID;
+				break;
+			default: break;
 		}
 	};
 
@@ -168,7 +194,7 @@ window.drydock = (function () {
 	var internalPartRow = function(partID,partType,row,ship) {
 		//get stats
 		var part, size, title, mass, stats;
-
+		row.innerHTML = '';
 		console.log('populating part: '+partType+partID.toString());
 		switch (partType) {
 			case "bulkhead":
