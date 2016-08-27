@@ -1,3 +1,20 @@
+.centered-div {
+	text-align:center;
+}
+
+.menu-row {
+	margin-bottom: 4px;
+}
+
+.btn-type0 {
+	width:20%;
+	text-align:center;
+}
+
+.btn-type1 {
+	width:100%;
+}
+
 .part-size {
 	text-align:center;
 	position:absolute;
@@ -7,6 +24,7 @@
 }
 
 .part-data {
+	height:50px;
 	margin-left:45px;
 	padding-right:10px;
 }
@@ -17,6 +35,27 @@
 }
 
 .part-empty {
+	margin:0px;
 	color:dimgrey;
 	text-align:center;
+}
+
+#pageoverlay {
+	opacity:0.2;
+	background-color:black;
+	position:fixed;
+	width:100%;
+	height:100%;
+	top:0px;
+	left:0px;
+	z-index:199
+}
+
+#menucontainer {
+	position:absolute;
+	width:100%;
+	min-height:200px;
+	overflow-x:hidden;
+	overflow-y:auto;
+	z-index:200;
 }
